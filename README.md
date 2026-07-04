@@ -1,95 +1,94 @@
-# 📨 匿名反馈 (Anonymous Feedback)
+# 📨 Praise App — Anonymous Feedback
 
-> 创建私密房间，分享链接给朋友，收集最真实的匿名评价。
+> Create private rooms, share a code with friends, and collect honest anonymous feedback.
 
-## 💡 为什么做这个？
+## 💡 Why?
 
-在日常生活和工作中，我们很难了解他人对自己的真实评价。同事、朋友往往碍于情面不会说出真心话。**匿名反馈** 通过"开房"模式，让你在小圈子里安全地收集匿名评价，帮助你了解更真实的自己。
+People rarely get honest feedback in daily life — colleagues and friends hold back to avoid awkwardness. **Praise App** uses a "room" model (like game lobbies) to let you safely collect anonymous feedback within your trusted circle, helping you discover how others really see you.
 
-## ✨ 核心功能
+## ✨ Features
 
-- 🏠 **创建房间** — 设置主题（如"对我演讲的反馈"），自动生成6位房间码
-- 🔗 **一键分享** — 把房间码或链接发给朋友，他们无需注册即可加入
-- ✍️ **完全匿名** — 留言者身份完全保密，不记录任何个人信息
-- 📬 **异步接收** — 你不在线也能收到留言，下次登录即可查看
-- 🔴 **未读提醒** — 新消息红色标记，一目了然
-- 🔒 **小圈子私密** — 只有知道房间码的人才能进入，防止外人闯入
+- 🏠 **Create Rooms** — Set a topic (e.g., "Feedback on my presentation"), get a 6-digit room code
+- 🔗 **One-Click Share** — Share the code or link — no registration needed for participants
+- ✍️ **Fully Anonymous** — No identity, IP, or personal data is recorded for senders
+- 📬 **Async Messaging** — Receive messages while offline; they're waiting when you log back in
+- 🔴 **Unread Badges** — New messages highlighted in red, mark all as read in one click
+- 🔒 **Private by Design** — Only people with the room code can enter, keeping outsiders away
 
-## 🛠 技术栈
+## 🛠 Tech Stack
 
-| 层面 | 技术 |
-|------|------|
-| 前端 | Next.js 16 (App Router) + React 19 + Tailwind CSS 4 |
-| 后端 | Next.js API Routes + TypeScript |
-| 数据库 | SQLite (本地) / Turso (生产) |
-| 认证 | JWT (jose) + bcryptjs |
-| 部署 | Vercel + Turso |
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16 (App Router) + React 19 + Tailwind CSS 4 |
+| Backend | Next.js API Routes + TypeScript |
+| Database | SQLite (local dev) / Turso (production) |
+| Auth | JWT (jose) + bcryptjs |
+| Deployment | Vercel + Turso |
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 本地开发
+### Local Development
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 启动开发服务器
+# Start dev server
 npm run dev
 
-# 打开浏览器
-# http://localhost:3000
+# Open http://localhost:3000
 ```
 
-无需配置数据库，自动使用本地 SQLite 文件。
+No database setup needed — uses a local SQLite file automatically.
 
-### 部署到 Vercel
+### Deploy to Vercel
 
-1. Fork 本仓库
-2. 在 [Turso](https://turso.tech) 创建免费数据库
-3. 在 Vercel 导入项目，设置环境变量：
-   - `JWT_SECRET` — 随机密钥
-   - `TURSO_DATABASE_URL` — Turso 数据库地址
-   - `TURSO_AUTH_TOKEN` — Turso 认证令牌
-4. 部署！
+1. Fork this repo
+2. Create a free database at [Turso](https://turso.tech)
+3. Import to Vercel and set environment variables:
+   - `JWT_SECRET` — random secret key
+   - `TURSO_DATABASE_URL` — your Turso database URL
+   - `TURSO_AUTH_TOKEN` — your Turso auth token
+4. Deploy!
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                 # 首页
-│   ├── login/page.tsx           # 登录
-│   ├── register/page.tsx        # 注册
-│   ├── join/page.tsx            # 加入房间
-│   ├── dashboard/page.tsx       # 仪表盘（我的房间）
-│   ├── dashboard/rooms/[id]/    # 房间详情（查看留言）
-│   ├── room/[code]/page.tsx     # 匿名留言页面
-│   └── api/                     # API 路由
-│       ├── auth/                # 注册/登录/登出
-│       └── rooms/               # 房间和留言 CRUD
+│   ├── page.tsx                 # Landing page
+│   ├── login/page.tsx           # Login
+│   ├── register/page.tsx        # Register
+│   ├── join/page.tsx            # Join a room
+│   ├── dashboard/page.tsx       # Dashboard (my rooms)
+│   ├── dashboard/rooms/[id]/    # Room detail (view messages)
+│   ├── room/[code]/page.tsx     # Anonymous message page
+│   └── api/                     # API routes
+│       ├── auth/                # Register / Login / Logout / Me
+│       └── rooms/               # Room & message CRUD
 ├── lib/
-│   ├── db.ts                    # 数据库连接
-│   ├── auth.ts                  # JWT + 密码哈希
-│   ├── queries.ts               # 数据库查询封装
-│   └── room-code.ts             # 房间码生成
-├── middleware.ts                 # 认证中间件
-└── types/index.ts               # 类型定义
+│   ├── db.ts                    # Database connection
+│   ├── auth.ts                  # JWT + password hashing
+│   ├── queries.ts               # Database query helpers
+│   └── room-code.ts             # Room code generation
+├── middleware.ts                 # Auth middleware
+└── types/index.ts               # TypeScript types
 ```
 
-## 🔄 工作流程
+## 🔄 How It Works
 
 ```
-房主                          朋友（无需注册）
-  │                               │
-  ├─ 注册/登录                    │
-  ├─ 创建房间（获得房间码）         │
-  ├─ 分享房间码 ──────────────→  │
-  │                               ├─ 输入房间码加入
-  │                               ├─ 写匿名留言 ✍️
-  │                               └─ 发送 ✅
-  ├─ 登录查看留言 📬              │
-  ├─ 看到未读标记 🔴              │
-  └─ 获得真实反馈 🎉              │
+Room Creator                    Friends (no account needed)
+    │                                │
+    ├─ Sign up / Log in              │
+    ├─ Create room → get code        │
+    ├─ Share code ────────────────→  │
+    │                                ├─ Enter room code
+    │                                ├─ Write anonymous note ✍️
+    │                                └─ Send ✅
+    ├─ Log in → check inbox 📬      │
+    ├─ Unread badges 🔴             │
+    └─ Discover real feedback 🎉     │
 ```
 
 ## 📄 License
